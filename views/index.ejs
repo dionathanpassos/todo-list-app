@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <script
+      src="https://kit.fontawesome.com/5dfd27b4a3.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>ToDo List 2.0</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>To Do List</h1>
+      </header>
+
+      <% if(message != "") { %>
+      <section class="message message-<%= type %>">
+        <span><%= message %></span>
+        <% if(type == "success") { %>
+        <i class="fa-regular fa-circle-check"></i>
+        <% } else { %>
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <% } %>
+      </section>
+      <% } %>
+
+      <form action="/create" method="post" class="form-task">
+        <div class="form-task-content">
+          <input type="text" name="task" id="task" maxlength="36" placeholder="Insira uma tarefa!"/>
+          <button type="submit" id="addButton" class="btn btn-blue">
+            Adicionar
+          </button>
+        </div>
+      </form>
+      <% if(task != null) { %>
+      <div class="modal">
+        <div class="modal-container">
+          <h1>Atualizar Tarefa</h1>
+          <form
+            action="/updateOne/<%= task._id %>"
+            method="post"
+            class="form-modal"
+          >
+            <textarea
+              name="task"
+              id="taskUpdate"
+              cols="35"
+              rows="3"
+              maxlength="36"
+            >
+<%= task.task %></textarea
+            >
+            <span class="count"><%= task.task.length %></span>
+            <span>/36</span>
+            <div class="btn-group">
+              <button type="submit" id="addButton" class="btn btn-blue">
+                Alterar
+              </button>
+              <a href="/" class="btn btn-red">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <% } %>
+
+      <div class="filter">
+        <a href="/">Todos</a>
+        <a href="/pending">Pendente</a>
+        <a href="/done">Concluido</a>
+        
+      </div>
+    
+        <ul class="tasks">
+          <%tasksList.forEach((task) => { %>
+            
+                <li class="task status-<%= task.status %>">
+                    <div class="task-title">
+                    <a href="/check/<%= task._id %>" title="task"><%= task.task %></a>
+                    </div>
+
+                    <div class="task-bottom">
+                    <span>Criado em: <%= task.date.toLocaleDateString('en') %></span>
+                    <% if(task.status == false) { %>
+                    <span>Status: <strong>Pendente</strong></span>
+                    <% }else {%>
+                    <span>Status: <strong>Concluido</strong></span>
+                    <% } %>
+                    <div class="group-action">
+                        <a
+                        href="/check/<%= task._id %>"
+                        class="icon-check"
+                        title="Finalizar/Ativar tarefa"
+                        ><i class="fa-solid fa-clipboard-check"></i
+                        ></a>
+                        <a
+                        href="/getById/<%= task._id %>/update"
+                        class="icon-update"
+                        title="Editar tarefa"
+                        ><i class="fa-solid fa-pen-to-square"></i
+                        ></a>
+                        <a
+                        href="/getById/<%= task._id %>/delete"
+                        class="icon-delete"
+                        title="Excluir tarefa"
+                        ><i class="fa-solid fa-trash"></i
+                        ></a>
+                    </div>
+                    </div>
+                </li>
+           
+          <% }) %>
+        </ul>
+
+
+      <% if(taskDelete != null) { %>
+      <section class="modal">
+        <div class="modal-container">
+          <h1>Confirmação</h1>
+          <hr />
+          <p>
+            Deseja realmente excluir a tarefa: <br />
+            <strong><%= taskDelete.task %></strong>
+          </p>
+          <div class="btn-group">
+            <a href="/deleteOne/<%= taskDelete._id %>" class="btn btn-blue"
+              >Sim</a
+            >
+            <a href="/" class="btn btn-red">Nao</a>
+          </div>
+        </div>
+      </section>
+      <% } %>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>
