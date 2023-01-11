@@ -106,7 +106,7 @@
      text-transform: uppercase;
  }
  .modal-container {
-     width: 360px;
+     width: 320px;
      padding: 1rem 1.5rem;
      background-color: #fff;
      border-radius: .5rem;
@@ -116,6 +116,7 @@
      font-size: 2rem;
  }
  .form-modal textarea {
+    width: 100%;
      resize: none;
      padding: .5rem;
      margin-top: 2rem;
